@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+<title>Harsha Boddu | Mechanical & Aerospace Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   ROOT — MERCEDES AMG PETRONAS F1 THEME
+   ═══════════════════════════════════════════════ */
+:root {
+  --teal:      #00D2BE;
+  --teal-dark: #00A89A;
+  --teal-dim:  #005A54;
+  --silver:    #C0C8D0;
+  --white:     #F0F4F8;
+  --black:     #070B0F;
+  --dark:      #0C1118;
+  --grey:      #111820;
+  --grey2:     #1A2230;
+  --accent:    #1E90FF;
+  --nav-h:     64px;   /* single source of truth for nav height */
+  --carbon: repeating-linear-gradient(
+    45deg, #090d13 0px, #090d13 2px, #0f1520 2px, #0f1520 9px
+  );
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html {
+  scroll-behavior: smooth;
+  font-size: 17px;          /* ↑ base bumped from 16 → 17px */
+  /* scroll-padding-top offsets anchor jumps so content clears the fixed nav */
+  scroll-padding-top: var(--nav-h);
+}
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Rajdhani', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+  min-width: 320px;
+}
+
+/* ═══════════════════════════════════════════════
+   TURBINE BLADE CURSOR
+   ═══════════════════════════════════════════════ */
+#turbine-cursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+}
+#turbine-cursor svg {
+  animation: turbineSpin 0.45s linear infinite;
+  filter: drop-shadow(0 0 7px var(--teal)) drop-shadow(0 0 2px #fff8);
+  display: block;
+}
+@keyframes turbineSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+#cursor-ring {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  width: 42px; height: 42px;
+  border: 1.5px solid rgba(0,210,190,0.3);
+  border-radius: 50%;
+  transition: left 0.09s linear, top 0.09s linear;
+}
+
+/* ═══════════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 2px; }
+
+/* ═══════════════════════════════════════════════
+   NAV
+   ═══════════════════════════════════════════════ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(16px, 4vw, 52px);
+  height: var(--nav-h);
+  background: rgba(7,11,15,0.94);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0,210,190,0.15);
+}
+.nav-logo {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: clamp(0.9rem, 2vw, 1.2rem);     /* ↑ slightly larger */
+  letter-spacing: 0.1em;
+  color: var(--white);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.nav-logo span { color: var(--teal); }
+.nav-links { display: flex; gap: clamp(16px, 2.5vw, 36px); list-style: none; }
+.nav-links a {
+  color: rgba(240,244,248,0.55);
+  text-decoration: none;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: clamp(0.82rem, 1.3vw, 1rem);    /* ↑ bumped */
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0; right: 0;
+  height: 2px;
+  background: var(--teal);
+  transform: scaleX(0);
+  transition: transform 0.2s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-links a:hover::after { transform: scaleX(1); }
+.nav-admin {
+  background: transparent;
+  border: 1px solid rgba(0,210,190,0.32);
+  color: var(--teal);
+  padding: 7px clamp(12px, 2vw, 20px);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: clamp(0.76rem, 1.2vw, 0.9rem);  /* ↑ bumped */
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+  white-space: nowrap; flex-shrink: 0;
+}
+.nav-admin:hover { background: var(--teal); color: var(--black); }
+
+/* hamburger */
+.nav-hamburger {
+  display: none;
+  flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 4px; flex-shrink: 0;
+}
+.nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--teal); border-radius: 2px; }
+.mobile-menu {
+  display: none;
+  position: fixed; top: var(--nav-h); left: 0; right: 0;
+  background: rgba(7,11,15,0.98);
+  border-bottom: 1px solid rgba(0,210,190,0.12);
+  z-index: 999; flex-direction: column;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  color: rgba(240,244,248,0.65);
+  text-decoration: none;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.05rem; font-weight: 600;       /* ↑ bumped */
+  letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 15px clamp(20px,6vw,36px);
+  border-bottom: 1px solid rgba(0,210,190,0.06);
+  transition: color 0.2s, background 0.2s;
+}
+.mobile-menu a:hover { color: var(--teal); background: rgba(0,210,190,0.05); }
+.mobile-menu a.teal-link { color: var(--teal); }
+
+/* ═══════════════════════════════════════════════
+   F1 TRACK + CAR
+   ═══════════════════════════════════════════════ */
+.f1-track {
+  position: fixed;
+  bottom: 52px; left: 0; right: 0;
+  height: 2px;
+  background: rgba(0,210,190,0.08);
+  z-index: 5; overflow: hidden;
+}
+.f1-track-line {
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--teal), transparent);
+  animation: trackPulse 3s linear infinite;
+}
+@keyframes trackPulse {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+.f1-car-wrapper {
+  position: fixed;
+  bottom: 35px;
+  z-index: 10;
+  pointer-events: none;
+  animation: carDrive 16s linear infinite;
+}
+@keyframes carDrive {
+  0%   { left: -340px; opacity: 0; }
+  4%   { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { left: calc(100vw + 120px); opacity: 0; }
+}
+.f1-trail {
+  position: absolute;
+  right: 100%; top: 50%;
+  transform: translateY(-50%);
+  width: 160px; height: 7px;
+  background: linear-gradient(90deg, transparent, rgba(0,210,190,0.2), rgba(0,210,190,0.5));
+  filter: blur(3px);
+}
+.f1-car-svg {
+  width: clamp(200px, 24vw, 300px);
+  filter:
+    drop-shadow(0 0 10px rgba(0,210,190,0.75))
+    drop-shadow(0 0 30px rgba(0,210,190,0.25));
+}
+
+@keyframes wheelSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ═══════════════════════════════════════════════
+   HERO
+   ═══════════════════════════════════════════════ */
+#home {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  /* top padding accounts for fixed nav height */
+  padding: clamp(88px,10vh,120px) clamp(24px,7vw,108px) clamp(110px,13vh,148px);
+  position: relative; overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 65% 55% at 85% 45%, rgba(0,210,190,0.09) 0%, transparent 70%),
+    radial-gradient(ellipse 35% 35% at 10% 80%, rgba(30,144,255,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+.carbon-panel {
+  position: absolute; right: -40px; top: 0; bottom: 0; width: 46%;
+  background: var(--carbon); opacity: 0.15;
+  clip-path: polygon(16% 0, 100% 0, 100% 100%, 0% 100%);
+}
+.hero-stripe {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 5px;
+  background: var(--teal); box-shadow: 0 0 28px var(--teal);
+}
+.hero-tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: clamp(0.72rem, 1.4vw, 0.9rem);   /* ↑ bumped */
+  color: var(--teal); letter-spacing: 0.3em; text-transform: uppercase;
+  margin-bottom: 18px; opacity: 0; animation: fadeUp 0.7s 0.2s ease forwards;
+}
+.hero-name {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(1.5rem, 7vw, 5.8rem);       /* ↑ bumped */
+  font-weight: 900; line-height: 1.0;
+  letter-spacing: -0.02em; text-transform: uppercase;
+  opacity: 0; animation: fadeUp 0.7s 0.4s ease forwards;
+}
+.hero-name .line2 { color: var(--teal); display: block; }
+.hero-divider {
+  width: 80px; height: 3px;
+  background: linear-gradient(90deg, var(--teal), var(--accent));
+  margin: 26px 0; opacity: 0; animation: fadeUp 0.7s 0.6s ease forwards;
+}
+.hero-desc {
+  padding-top: 30px;  
+  max-width: 600px;
+  font-size: clamp(1.05rem, 1.8vw, 1.22rem);  /* ↑ bumped */
+  font-weight: 400; line-height: 1.8;
+  color: rgba(240,244,248,0.68);
+  opacity: 0; animation: fadeUp 0.7s 0.8s ease forwards;
+}
+.hero-desc strong { color: var(--white); font-weight: 700; }
+.hero-stats {
+  display: flex; flex-wrap: wrap;
+  gap: clamp(20px, 4vw, 56px);
+  margin-top: clamp(32px, 5vh, 58px);
+  opacity: 0; animation: fadeUp 0.7s 1.0s ease forwards;
+}
+.stat { display: flex; flex-direction: column; gap: 4px; position: relative; }
+.stat::before {
+  content: ''; position: absolute;
+  top: 0; left: -14px; width: 2px; height: 100%;
+  background: var(--teal);
+}
+.stat-num {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(1.6rem, 3vw, 2.3rem);      /* ↑ bumped */
+  font-weight: 700; color: var(--white); line-height: 1;
+}
+.stat-num span { color: var(--teal); }
+.stat-label {
+  font-size: clamp(0.66rem, 1.1vw, 0.78rem);  /* ↑ bumped */
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(240,244,248,0.38); font-weight: 600;
+}
+.hero-cta {
+  display: flex; flex-wrap: wrap; gap: 16px;
+  margin-top: clamp(28px, 4vh, 50px);
+  opacity: 0; animation: fadeUp 0.7s 1.2s ease forwards;
+}
+.btn-primary {
+  background: var(--teal); color: var(--black);
+  padding: 14px clamp(24px, 3vw, 38px);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: clamp(0.86rem, 1.3vw, 0.98rem);  /* ↑ bumped */
+  font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase;
+  border: none; cursor: pointer; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 100%, 10px 100%);
+  transition: all 0.22s;
+}
+.btn-primary:hover {
+  background: #00ffe8; transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,210,190,0.4);
+}
+.btn-secondary {
+  background: transparent; color: var(--white);
+  padding: 14px clamp(24px, 3vw, 38px);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: clamp(0.86rem, 1.3vw, 0.98rem);  /* ↑ bumped */
+  font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+  border: 1.5px solid rgba(240,244,248,0.2);
+  cursor: pointer; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: all 0.22s;
+}
+.btn-secondary:hover { border-color: var(--teal); color: var(--teal); transform: translateY(-2px); }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════
+   SECTIONS COMMON
+   — Each section gets padding-top that clears the nav
+   ═══════════════════════════════════════════════ */
+section {
+  padding: clamp(72px, 10vh, 110px) clamp(24px, 7vw, 108px) clamp(56px, 8vh, 100px);
+  position: relative;
+}
+/* Anchor offset: when a section is the scroll target, push content below the nav */
+section[id] {
+  scroll-margin-top: var(--nav-h);
+}
+
+.section-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: clamp(0.68rem, 1.1vw, 0.82rem);  /* ↑ bumped */
+  color: var(--teal); letter-spacing: 0.4em; text-transform: uppercase;
+  margin-bottom: 10px; display: flex; align-items: center; gap: 12px;
+}
+.section-label::before { content: ''; width: 22px; height: 2px; background: var(--teal); }
+.section-title {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(1.8rem, 4vw, 3.1rem);      /* ↑ bumped */
+  font-weight: 700; text-transform: uppercase;
+  letter-spacing: -0.01em; line-height: 1.1;
+  margin-bottom: clamp(32px, 5vw, 56px);
+}
+.section-title span { color: var(--teal); }
+
+/* ═══════════════════════════════════════════════
+   ABOUT
+   ═══════════════════════════════════════════════ */
+#about {
+  background: var(--grey);
+  border-top: 1px solid rgba(0,210,190,0.1);
+  border-bottom: 1px solid rgba(0,210,190,0.1);
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(28px, 5vw, 80px); align-items: start;
+}
+.about-text p {
+  font-size: clamp(1rem, 1.55vw, 1.15rem);    /* ↑ bumped */
+  line-height: 1.85; color: rgba(240,244,248,0.7); margin-bottom: 18px;
+}
+.about-text p strong { color: var(--white); }
+.skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(10px, 2vw, 18px); }
+.skill-cat {
+  background: rgba(0,210,190,0.04);
+  border: 1px solid rgba(0,210,190,0.1);
+  padding: clamp(12px, 2vw, 20px); position: relative; overflow: hidden;
+}
+.skill-cat::before {
+  content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--teal);
+}
+.skill-cat-title {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(0.6rem, 0.95vw, 0.72rem);  /* ↑ bumped */
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 11px; padding-left: 10px;
+}
+.skill-tag {
+  display: inline-block;
+  background: rgba(240,244,248,0.05); border: 1px solid rgba(240,244,248,0.08);
+  color: rgba(240,244,248,0.78); padding: 4px 10px;
+  font-size: clamp(0.75rem, 1.1vw, 0.88rem);  /* ↑ bumped */
+  font-weight: 600;
+  letter-spacing: 0.06em; margin: 3px; transition: all 0.2s;
+}
+.skill-tag:hover {
+  background: rgba(0,210,190,0.12); border-color: rgba(0,210,190,0.32); color: var(--white);
+}
+
+/* ═══════════════════════════════════════════════
+   EXPERIENCE
+   ═══════════════════════════════════════════════ */
+#experience { background: var(--dark); }
+.timeline { position: relative; padding-left: clamp(28px, 4vw, 46px); }
+.timeline::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(180deg, var(--teal), rgba(0,210,190,0.08));
+}
+.tl-item { position: relative; margin-bottom: clamp(30px, 5vh, 52px); padding-left: 24px; }
+.tl-item::before {
+  content: ''; position: absolute;
+  left: calc(-1 * clamp(28px, 4vw, 46px) - 4px); top: 7px;
+  width: 10px; height: 10px; background: var(--teal);
+  box-shadow: 0 0 10px var(--teal);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+.tl-date {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: clamp(0.7rem, 1.1vw, 0.82rem);   /* ↑ bumped */
+  color: var(--teal); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 5px;
+}
+.tl-role {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(0.94rem, 1.7vw, 1.15rem);  /* ↑ bumped */
+  font-weight: 600; margin-bottom: 4px; letter-spacing: 0.04em;
+}
+.tl-company {
+  font-size: clamp(0.86rem, 1.35vw, 1rem);    /* ↑ bumped */
+  color: var(--accent); font-weight: 600; letter-spacing: 0.1em; margin-bottom: 10px;
+}
+.tl-desc {
+  font-size: clamp(0.92rem, 1.4vw, 1.06rem);  /* ↑ bumped */
+  line-height: 1.78; color: rgba(240,244,248,0.6);
+}
+
+/* ═══════════════════════════════════════════════
+   PROJECTS
+   ═══════════════════════════════════════════════ */
+#projects {
+  background: var(--grey);
+  border-top: 1px solid rgba(0,210,190,0.1);
+}
+.proj-tabs {
+  display: flex; flex-wrap: wrap; gap: 0;
+  margin-bottom: clamp(24px, 4vw, 48px);
+  border-bottom: 2px solid rgba(0,210,190,0.1);
+}
+.proj-tab {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: clamp(0.78rem, 1.2vw, 0.94rem);  /* ↑ bumped */
+  font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 11px clamp(12px, 2vw, 26px);
+  background: transparent; border: none;
+  color: rgba(240,244,248,0.38); cursor: pointer;
+  position: relative; transition: color 0.2s;
+  display: flex; align-items: center; gap: 7px;
+}
+.proj-tab.active { color: var(--white); }
+.proj-tab.active::after {
+  content: ''; position: absolute;
+  bottom: -2px; left: 0; right: 0;
+  height: 2px; background: var(--teal);
+}
+.proj-tab:hover { color: var(--white); }
+.wheel-icon { width: 16px; height: 16px; }
+.proj-tab:hover .wheel-icon,
+.proj-tab.active .wheel-icon { animation: wheelSpin 0.65s linear infinite; }
+
+.proj-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+  gap: clamp(14px, 2vw, 22px);
+}
+.proj-card {
+  background: var(--dark); border: 1px solid rgba(240,244,248,0.06);
+  overflow: hidden; transition: all 0.3s; cursor: pointer;
+  position: relative; display: flex; flex-direction: column;
+}
+.proj-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--teal), var(--accent));
+  transform: scaleX(0); transition: transform 0.3s; transform-origin: left;
+}
+.proj-card:hover {
+  border-color: rgba(0,210,190,0.22); transform: translateY(-4px);
+  box-shadow: 0 14px 36px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,210,190,0.07);
+}
+.proj-card:hover::before { transform: scaleX(1); }
+.proj-card-header {
+  padding: clamp(16px,2vw,24px) clamp(16px,2vw,24px) 14px;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;
+}
+.proj-card-title {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(0.84rem, 1.3vw, 0.98rem);  /* ↑ bumped */
+  font-weight: 600; line-height: 1.4; letter-spacing: 0.02em; flex: 1;
+}
+.proj-card-icon {
+  width: 36px; height: 36px;
+  background: rgba(0,210,190,0.08); border: 1px solid rgba(0,210,190,0.16);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.1rem;
+}
+.proj-card-body { padding: 0 clamp(16px,2vw,24px) 16px; flex: 1; }
+.proj-card-desc {
+  font-size: clamp(0.9rem, 1.2vw, 1rem);      /* ↑ bumped */
+  line-height: 1.75; color: rgba(240,244,248,0.56);
+}
+.proj-card-tags {
+  padding: 13px clamp(16px,2vw,24px);
+  border-top: 1px solid rgba(240,244,248,0.05);
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.proj-tag {
+  font-size: clamp(0.66rem, 0.95vw, 0.76rem); /* ↑ bumped */
+  font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 9px;
+  background: rgba(0,210,190,0.07); color: rgba(0,210,190,0.78);
+  border: 1px solid rgba(0,210,190,0.13);
+}
+.proj-card-footer {
+  padding: 12px clamp(16px,2vw,24px);
+  border-top: 1px solid rgba(240,244,248,0.05);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.proj-link {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: clamp(0.7rem, 1.1vw, 0.8rem);    /* ↑ bumped */
+  color: var(--teal); text-decoration: none; letter-spacing: 0.1em;
+  display: flex; align-items: center; gap: 6px; transition: gap 0.2s;
+}
+.proj-link:hover { gap: 12px; }
+.proj-gh-stats {
+  display: flex; gap: 12px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.72rem;                          /* ↑ bumped */
+  color: rgba(240,244,248,0.28);
+}
+.loading-card {
+  background: var(--dark); border: 1px solid rgba(240,244,248,0.06);
+  padding: 40px; display: flex; align-items: center; justify-content: center; gap: 10px;
+  color: rgba(240,244,248,0.28); font-family: 'Share Tech Mono', monospace;
+  font-size: clamp(0.74rem, 1.1vw, 0.84rem);  /* ↑ bumped */
+  letter-spacing: 0.14em; grid-column: 1/-1;
+}
+.loading-dot {
+  width: 5px; height: 5px; background: var(--teal);
+  border-radius: 50%; animation: blink 1.2s infinite;
+}
+.loading-dot:nth-child(2) { animation-delay: 0.2s; }
+.loading-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes blink { 0%,80%,100%{opacity:.15} 40%{opacity:1} }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ═══════════════════════════════════════════════
+   CONTACT
+   ═══════════════════════════════════════════════ */
+#contact { background: var(--dark); border-top: 1px solid rgba(0,210,190,0.1); }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px,5vw,80px); }
+.contact-info { display: flex; flex-direction: column; gap: clamp(12px,2vw,20px); }
+.contact-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: clamp(14px,2vw,20px); border: 1px solid rgba(240,244,248,0.06); transition: border-color 0.2s;
+}
+.contact-item:hover { border-color: rgba(0,210,190,0.22); }
+.contact-icon {
+  width: 44px; height: 44px;
+  background: rgba(0,210,190,0.08); border: 1px solid rgba(0,210,190,0.16);
+  display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;
+}
+.contact-detail-label {
+  font-size: clamp(0.64rem, 0.95vw, 0.74rem); /* ↑ bumped */
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(240,244,248,0.3); font-weight: 600; margin-bottom: 3px;
+}
+.contact-detail-val {
+  font-size: clamp(0.9rem, 1.4vw, 1.05rem);   /* ↑ bumped */
+  font-weight: 500; color: var(--white);
+}
+.contact-detail-val a { color: inherit; text-decoration: none; transition: color 0.2s; }
+.contact-detail-val a:hover { color: var(--teal); }
+.contact-form { display: flex; flex-direction: column; gap: 15px; }
+.form-group { display: flex; flex-direction: column; gap: 7px; }
+.form-label {
+  font-size: clamp(0.66rem, 0.95vw, 0.76rem); /* ↑ bumped */
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(240,244,248,0.38); font-weight: 700;
+}
+.form-input, .form-textarea, .select-input {
+  background: rgba(240,244,248,0.04); border: 1px solid rgba(240,244,248,0.08);
+  color: var(--white); padding: 13px 15px;
+  font-family: 'Rajdhani', sans-serif; font-size: clamp(0.94rem, 1.4vw, 1.06rem); /* ↑ bumped */
+  outline: none; transition: border-color 0.2s; width: 100%;
+}
+.form-input:focus, .form-textarea:focus { border-color: var(--teal); }
+.form-textarea { resize: vertical; min-height: 100px; }
+.select-input { cursor: pointer; }
+.select-input option { background: var(--grey); }
+
+/* ═══════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════ */
+footer {
+  background: var(--grey); border-top: 1px solid rgba(0,210,190,0.13);
+  padding: clamp(18px,3vh,28px) clamp(24px,7vw,108px);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 10px; margin-bottom: 48px;
+}
+.footer-brand {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(0.86rem,1.4vw,1rem);        /* ↑ bumped */
+  font-weight: 700; letter-spacing: 0.1em;
+}
+.footer-brand span { color: var(--teal); }
+.footer-copy {
+  font-size: clamp(0.68rem,1.1vw,0.84rem);     /* ↑ bumped */
+  color: rgba(240,244,248,0.26); font-family: 'Share Tech Mono', monospace;
+}
+
+/* ═══════════════════════════════════════════════
+   TELEMETRY BAR
+   ═══════════════════════════════════════════════ */
+.telemetry-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; height: 48px;
+  background: rgba(7,11,15,0.97); border-top: 1px solid rgba(0,210,190,0.15);
+  z-index: 100; display: flex; align-items: center; overflow: hidden;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: clamp(0.62rem, 0.94vw, 0.72rem);  /* ↑ bumped */
+  letter-spacing: 0.1em; color: rgba(240,244,248,0.36);
+}
+.tel-scroll {
+  display: flex; gap: clamp(18px,3vw,36px);
+  animation: telScroll 24s linear infinite; white-space: nowrap; padding: 0 18px;
+}
+@keyframes telScroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+.tel-item { display: flex; align-items: center; gap: 7px; }
+.tel-dot { width: 5px; height: 5px; background: var(--teal); border-radius: 50%; animation: blink 2s infinite; }
+.tel-val { color: var(--white); }
+
+/* ═══════════════════════════════════════════════
+   MODAL
+   ═══════════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.88);
+  backdrop-filter: blur(14px); z-index: 2000;
+  display: none; align-items: center; justify-content: center; padding: 20px;
+}
+.modal-overlay.active { display: flex; }
+.modal {
+  background: var(--grey); border: 1px solid rgba(0,210,190,0.22);
+  width: 100%; max-width: 420px; padding: clamp(28px,4vw,48px);
+  position: relative; animation: modalIn 0.28s ease;
+}
+@keyframes modalIn { from{opacity:0;transform:scale(.93) translateY(18px)} to{opacity:1;transform:scale(1) translateY(0)} }
+.modal::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--teal), var(--accent));
+}
+.modal-close { position: absolute; top: 13px; right: 13px; background: none; border: none; color: rgba(240,244,248,0.33); font-size: 1.2rem; cursor: pointer; transition: color 0.2s; }
+.modal-close:hover { color: var(--teal); }
+.modal-title { font-family: 'Orbitron', monospace; font-size: clamp(1rem,1.6vw,1.2rem); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+.modal-sub { font-size: clamp(0.76rem,1.2vw,0.88rem); color: rgba(240,244,248,0.34); margin-bottom: 28px; letter-spacing: 0.05em; }
+.modal-error { background: rgba(0,210,190,0.07); border: 1px solid rgba(0,210,190,0.22); color: var(--teal); padding: 10px 13px; font-size: 0.86rem; margin-bottom: 16px; display: none; }
+
+/* ═══════════════════════════════════════════════
+   ADMIN PANEL
+   ═══════════════════════════════════════════════ */
+#admin-panel { position: fixed; inset: 0; background: var(--black); z-index: 3000; display: none; flex-direction: column; overflow-y: auto; }
+#admin-panel.active { display: flex; }
+.admin-bar { background: var(--grey); border-bottom: 2px solid var(--teal); padding: 14px clamp(16px,4vw,40px); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; flex-wrap: wrap; gap: 10px; }
+.admin-title { font-family: 'Orbitron', monospace; font-size: clamp(0.84rem,1.4vw,1rem); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+.admin-title span { color: var(--teal); }
+.admin-content { padding: clamp(24px,4vh,48px) clamp(16px,6vw,80px); flex: 1; }
+.admin-section-title { font-family: 'Orbitron', monospace; font-size: clamp(0.88rem,1.4vw,1.08rem); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 22px; padding-bottom: 10px; border-bottom: 1px solid rgba(0,210,190,0.15); }
+.admin-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; max-width: 800px; }
+.admin-form .full-width { grid-column: 1/-1; }
+.admin-projects-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px,100%),1fr)); gap: 12px; margin-top: 22px; }
+.admin-proj-item { background: var(--grey); border: 1px solid rgba(240,244,248,0.07); padding: 16px; display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.admin-proj-item-title { font-family: 'Orbitron', monospace; font-size: clamp(0.74rem,1.2vw,0.86rem); font-weight: 600; margin-bottom: 5px; }
+.admin-proj-item-cat { font-size: 0.74rem; color: var(--teal); letter-spacing: 0.1em; text-transform: uppercase; }
+.btn-delete { background: rgba(0,210,190,0.07); border: 1px solid rgba(0,210,190,0.16); color: var(--teal); padding: 6px 12px; font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; cursor: pointer; transition: all 0.2s; flex-shrink: 0; letter-spacing: 0.1em; }
+.btn-delete:hover { background: var(--teal); color: var(--black); }
+
+/* ═══════════════════════════════════════════════
+   SCROLL REVEAL
+   ═══════════════════════════════════════════════ */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .about-grid { grid-template-columns: 1fr; gap: 32px; }
+  .contact-grid { grid-template-columns: 1fr; gap: 32px; }
+}
+@media (max-width: 600px) {
+  html { font-size: 15px; }
+  .nav-admin { display: none; }
+  .hero-stats { gap: 16px; }
+  .stat::before { left: -10px; }
+  .skills-grid { grid-template-columns: 1fr; }
+  .proj-tabs { gap: 0; }
+  .proj-tab { font-size: 0.72rem; padding: 9px 10px; }
+  footer { justify-content: center; text-align: center; }
+  #turbine-cursor, #cursor-ring { display: none; }
+  body { cursor: auto; }
+  .f1-car-svg { width: clamp(160px,50vw,220px); }
+}
+@media (min-width: 1600px) {
+  html { font-size: 19px; }
+  .proj-grid { grid-template-columns: repeat(3,1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- ── TURBINE CURSOR ─────────────────────────────────── -->
+<div id="turbine-cursor">
+  <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+    <path d="M15 15 C13 10 14 4 15 2 C16 4 17 10 15 15Z" fill="#00D2BE" opacity="0.95"/>
+    <path d="M15 15 C13 10 14 4 15 2 C16 4 17 10 15 15Z"
+          fill="#00D2BE" opacity="0.95" transform="rotate(120 15 15)"/>
+    <path d="M15 15 C13 10 14 4 15 2 C16 4 17 10 15 15Z"
+          fill="#00D2BE" opacity="0.95" transform="rotate(240 15 15)"/>
+    <circle cx="15" cy="15" r="4" fill="#070B0F" stroke="#00D2BE" stroke-width="1.5"/>
+    <circle cx="15" cy="15" r="2" fill="#00D2BE"/>
+  </svg>
+</div>
+<div id="cursor-ring"></div>
+
+<!-- ── F1 TRACK ───────────────────────────────────────── -->
+<div class="f1-track"><div class="f1-track-line"></div></div>
+
+<div class="f1-car-wrapper" id="f1car">
+  <div class="f1-trail"></div>
+  <svg class="f1-car-svg" viewBox="0 0 320 88" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="22,48 42,42 42,56 22,56" fill="#004A44"/>
+    <polygon points="42,38 82,24 205,22 265,30 290,38 288,52 258,60 77,62 42,56" fill="#00C8B6"/>
+    <polygon points="80,24 205,22 240,32 225,40 95,42 88,32" fill="#009E94" opacity="0.75"/>
+    <polygon points="118,22 195,21 215,28 200,30 118,30" fill="#007A72"/>
+    <line x1="90" y1="55" x2="255" y2="53" stroke="rgba(0,210,190,0.25)" stroke-width="1.2"/>
+    <polygon points="150,24 183,17 196,20 195,28 150,28" fill="#0C1118"/>
+    <polygon points="154,24 182,18 193,21 192,27 154,27" fill="#1A3040" opacity="0.65"/>
+    <path d="M157,24 Q176,13 193,23" stroke="#889AA8" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+    <rect x="26" y="12" width="38" height="3.5" rx="1.2" fill="#00C8B6"/>
+    <rect x="26" y="17" width="38" height="3" rx="1.2" fill="#00A89A"/>
+    <rect x="24" y="11" width="4" height="19" rx="1" fill="#007A72"/>
+    <rect x="60" y="11" width="4" height="19" rx="1" fill="#007A72"/>
+    <rect x="41" y="19" width="3" height="22" rx="1" fill="#006660"/>
+    <polygon points="268,38 294,40 293,50 268,52 271,46" fill="#00A89A"/>
+    <rect x="282" y="37" width="32" height="3.5" rx="1" fill="#00D2BE"/>
+    <rect x="284" y="42" width="28" height="2.5" rx="1" fill="#00B8A8"/>
+    <rect x="282" y="34" width="32" height="2.5" rx="1" fill="#00C8B6" opacity="0.7"/>
+    <rect x="278" y="33" width="3.5" height="18" rx="1" fill="#007A72"/>
+    <rect x="311" y="34" width="3.5" height="16" rx="1" fill="#007A72"/>
+    <rect x="286" y="46" width="16" height="1.8" rx="0.9" fill="#00D2BE" opacity="0.5"/>
+    <rect x="168" y="25" width="28" height="14" rx="2" fill="rgba(255,255,255,0.1)"/>
+    <text x="182" y="35" text-anchor="middle"
+          font-family="Orbitron,monospace" font-size="9" font-weight="900" fill="white" opacity="0.9">44</text>
+    <ellipse cx="42" cy="50" rx="7" ry="3.2" fill="#00FFEE" opacity="0.3"/>
+    <ellipse cx="30" cy="50" rx="4" ry="2" fill="#00FFCC" opacity="0.15"/>
+    <line x1="68" y1="56" x2="82" y2="52" stroke="#557080" stroke-width="1.5"/>
+    <line x1="68" y1="62" x2="82" y2="58" stroke="#557080" stroke-width="1.5"/>
+    <line x1="258" y1="56" x2="246" y2="52" stroke="#557080" stroke-width="1.5"/>
+    <line x1="258" y1="62" x2="246" y2="58" stroke="#557080" stroke-width="1.5"/>
+    <g id="wheel-rear" style="transform-origin:80px 64px">
+      <circle cx="80" cy="64" r="18" fill="#0D1520" stroke="#1A2A3A" stroke-width="2"/>
+      <circle cx="80" cy="64" r="12" fill="#0A1018"/>
+      <line x1="80" y1="46" x2="80" y2="82" stroke="#233040" stroke-width="2"/>
+      <line x1="62" y1="64" x2="98" y2="64" stroke="#233040" stroke-width="2"/>
+      <line x1="68" y1="50" x2="92" y2="78" stroke="#1C2838" stroke-width="1.4"/>
+      <line x1="92" y1="50" x2="68" y2="78" stroke="#1C2838" stroke-width="1.4"/>
+      <circle cx="80" cy="64" r="5.5" fill="#00D2BE"/>
+      <circle cx="80" cy="64" r="2.8" fill="#070B0F"/>
+    </g>
+    <rect x="62" y="48" width="6" height="24" rx="2" fill="#007A72"/>
+    <g id="wheel-front" style="transform-origin:245px 64px">
+      <circle cx="245" cy="64" r="16" fill="#0D1520" stroke="#1A2A3A" stroke-width="2"/>
+      <circle cx="245" cy="64" r="10.5" fill="#0A1018"/>
+      <line x1="245" y1="48" x2="245" y2="80" stroke="#233040" stroke-width="2"/>
+      <line x1="229" y1="64" x2="261" y2="64" stroke="#233040" stroke-width="2"/>
+      <line x1="234" y1="53" x2="256" y2="75" stroke="#1C2838" stroke-width="1.4"/>
+      <line x1="256" y1="53" x2="234" y2="75" stroke="#1C2838" stroke-width="1.4"/>
+      <circle cx="245" cy="64" r="5" fill="#00D2BE"/>
+      <circle cx="245" cy="64" r="2.5" fill="#070B0F"/>
+    </g>
+    <rect x="253" y="50" width="5.5" height="22" rx="2" fill="#007A72"/>
+  </svg>
+</div>
+
+<!-- ── NAVIGATION ─────────────────────────────────────── -->
+<nav>
+  <div class="nav-logo">BHV<span></span></div>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-admin" onclick="openLogin()">⬡ Admin</button>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#home"       onclick="closeMenu()">Home</a>
+  <a href="#about"      onclick="closeMenu()">About</a>
+  <a href="#experience" onclick="closeMenu()">Experience</a>
+  <a href="#projects"   onclick="closeMenu()">Projects</a>
+  <a href="#contact"    onclick="closeMenu()">Contact</a>
+  <a href="#" onclick="closeMenu();openLogin();" class="teal-link">⬡ Admin Login</a>
+</div>
+
+<!-- ── HERO ───────────────────────────────────────────── -->
+<section id="home">
+  <div class="hero-bg"></div>
+  <div class="carbon-panel"></div>
+  <div class="hero-stripe"></div>
+  <div class="hero-tag"> </div>
+  <h1 class="hero-name">
+    Boddu<br>
+    <span class="line2">Harshavardhan</span>
+  </h1>
+  <div class="hero-divider"></div>
+  <p class="hero-desc">
+    <strong>B.Tech Mechanical Engineering</strong> student at Gayatri Vidya Parishad with a passion for
+    <strong>CFD simulation</strong>, <strong>rocket propulsion</strong>, and
+    engineering solutions at the intersection of
+    fluid dynamics, aerospace systems, and high-performance simulation.
+  </p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">8.4<span>/10</span></div><div class="stat-label">GPA</div></div>
+   
+  </div>
+  <div class="hero-cta">
+    <a href="#projects" class="btn-primary">↳ View Projects</a>
+    <a href="mailto:323103320010@gvpce.ac.in" class="btn-secondary">Contact Me</a>
+  </div>
+</section>
+
+<!-- ── ABOUT ──────────────────────────────────────────── -->
+<section id="about">
+  <div class="section-label">About</div>
+  <h2 class="section-title">Engineering <span>Excellence</span></h2>
+  <div class="about-grid reveal">
+    <div class="about-text">
+      <p>I'm an <strong>enthusiastic and self-driven engineering student</strong> specialising in mechanical design, CFD simulation, and computational analysis. Currently pursuing B.Tech Mechanical Engineering at Gayatri Vidya Parishad, Srikakulam (2023–2027) with a GPA of <strong>8.4/10</strong>.</p>
+      <p>My focus areas include <strong>ANSYS Fluent</strong> and <strong>SU2</strong> for CFD, FEA with <strong>Altair HyperMesh</strong>, and automating engineering calculations with <strong>Python</strong>. Passionate about applying these to aerospace, propulsion, and high-performance mechanical systems.</p>
+      <p>Previously scored <strong>93.2%</strong> in MPC stream at Chakradhar College (2021–2023). Always hungry to bridge theory with real-world simulation.</p>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-cat"><div class="skill-cat-title">CAD / FEA</div><span class="skill-tag">AutoCAD</span><span class="skill-tag">CATIA</span><span class="skill-tag">HyperMesh</span></div>
+      <div class="skill-cat"><div class="skill-cat-title">CFD / Sim</div><span class="skill-tag">ANSYS Fluent</span><span class="skill-tag">SU2</span><span class="skill-tag">MATLAB</span></div>
+      <div class="skill-cat"><div class="skill-cat-title">Programming</div><span class="skill-tag">Python</span><span class="skill-tag">MATLAB</span><span class="skill-tag">C</span></div>
+      <div class="skill-cat"><div class="skill-cat-title">Creative</div><span class="skill-tag">Premiere Pro</span><span class="skill-tag">CapCut</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EXPERIENCE ─────────────────────────────────────── -->
+<section id="experience">
+  <div class="section-label">Experience</div>
+  <h2 class="section-title">Pit <span>Lane</span></h2>
+  <div class="timeline reveal">
+    <div class="tl-item">
+      <div class="tl-date">May 2025 – Jul 2025</div>
+      <div class="tl-role">Intern — CAE / FEA</div>
+      <div class="tl-company">Altair Platform · HyperMesh 2024</div>
+      <div class="tl-desc">Working on finite element analysis using Altair HyperMesh 2024. Performing preprocessing tasks including meshing, boundary condition setup, and model validation. Gaining hands-on experience in structural simulation and computational mechanics.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Dec 2023 – Feb 2024</div>
+      <div class="tl-role">Video Editing Intern</div>
+      <div class="tl-company">JKS News Channel</div>
+      <div class="tl-desc">Edited short-form and long-form news videos for broadcast and digital platforms. Applied colour correction, audio enhancements, and transitions. Contributed to the Nanduri YouTube Channel, generating <strong>1M+ video views</strong>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROJECTS ───────────────────────────────────────── -->
+<section id="projects">
+  <div class="section-label">Projects</div>
+  <h2 class="section-title">On The <span>Grid</span></h2>
+  <div class="proj-tabs">
+    <button class="proj-tab active" onclick="switchTab('all',this)">
+      <svg class="wheel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+      All
+    </button>
+    <button class="proj-tab" onclick="switchTab('mechanical',this)">
+      <svg class="wheel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+      Mechanical
+    </button>
+    <button class="proj-tab" onclick="switchTab('aerospace',this)">
+      <svg class="wheel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+      Aerospace
+    </button>
+    <button class="proj-tab" onclick="switchTab('github',this)">
+      <svg class="wheel-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.165 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+      GitHub
+    </button>
+  </div>
+  <div id="tab-all" class="tab-panel active"><div class="proj-grid" id="proj-grid-all"></div></div>
+  <div id="tab-mechanical" class="tab-panel"><div class="proj-grid" id="proj-grid-mechanical"></div></div>
+  <div id="tab-aerospace" class="tab-panel"><div class="proj-grid" id="proj-grid-aerospace"></div></div>
+  <div id="tab-github" class="tab-panel">
+    <div class="proj-grid" id="proj-grid-github">
+      <div class="loading-card"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div>FETCHING GITHUB TELEMETRY...</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ────────────────────────────────────────── -->
+<section id="contact">
+  <div class="section-label">Contact</div>
+  <h2 class="section-title">Race <span>Control</span></h2>
+  <div class="contact-grid reveal">
+    <div class="contact-info">
+      <div class="contact-item"><div class="contact-icon">📧</div><div><div class="contact-detail-label">Email</div><div class="contact-detail-val"><a href="mailto:323103320010@gvpce.ac.in">323103320010@gvpce.ac.in</a></div></div></div>
+      <div class="contact-item"><div class="contact-icon">📱</div><div><div class="contact-detail-label">Phone</div><div class="contact-detail-val"><a href="tel:+916303813600">+91 6303 813 600</a></div></div></div>
+      <div class="contact-item"><div class="contact-icon">⬡</div><div><div class="contact-detail-label">GitHub</div><div class="contact-detail-val"><a href="https://github.com/harshaverse" target="_blank">github.com/harshaverse</a></div></div></div>
+      <div class="contact-item"><div class="contact-icon">📍</div><div><div class="contact-detail-label">Location</div><div class="contact-detail-val">Srikakulam, Andhra Pradesh, India</div></div></div>
+    </div>
+    <form class="contact-form" onsubmit="handleContactForm(event)">
+      <div class="form-group"><label class="form-label">Your Name</label><input class="form-input" type="text" placeholder="John Doe" required></div>
+      <div class="form-group"><label class="form-label">Email Address</label><input class="form-input" type="email" placeholder="you@example.com" required></div>
+      <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" placeholder="Your message..." required></textarea></div>
+      <button type="submit" class="btn-primary" style="align-self:flex-start">↳ Send Message</button>
+    </form>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────── -->
+<footer>
+  <div class="footer-brand">HI<span></span></div>
+  <div class="footer-copy">© 2025 · MECHANICAL</div>
+</footer>
+
+<!-- ── TELEMETRY BAR ──────────────────────────────────── -->
+<div class="telemetry-bar">
+  <div class="tel-scroll">
+    <div class="tel-item"><div class="tel-dot"></div>STATUS<span class="tel-val" style="margin-left:6px">ONLINE</span></div>
+    <div class="tel-item">MACH <span class="tel-val">2.8</span></div>
+    <div class="tel-item">ENGINE <span class="tel-val">ANSYS FLUENT</span></div>
+    <div class="tel-item">TURBULENCE <span class="tel-val">k-Ω SST</span></div>
+    <div class="tel-item">THRUST <span class="tel-val">600 N</span></div>
+    <div class="tel-item">TEMP <span class="tel-val">3000 K</span></div>
+    <div class="tel-item">PRESSURE <span class="tel-val">1.8 MPa</span></div>
+    <div class="tel-item">LOCATION <span class="tel-val">SRIKAKULAM</span></div>
+    <div class="tel-item">TOOLS <span class="tel-val">SU2 · CATIA · HYPERMESH</span></div>
+    <!-- duplicate for seamless scroll -->
+    <div class="tel-item"><div class="tel-dot"></div>STATUS<span class="tel-val" style="margin-left:6px">ONLINE</span></div>
+    <div class="tel-item">GPA <span class="tel-val">8.4 / 10</span></div>
+    <div class="tel-item">MACH <span class="tel-val">2.8</span></div>
+    <div class="tel-item">ENGINE <span class="tel-val">ANSYS FLUENT</span></div>
+    <div class="tel-item">TURBULENCE <span class="tel-val">k-Ω SST</span></div>
+    <div class="tel-item">THRUST <span class="tel-val">600 N</span></div>
+    <div class="tel-item">TEMP <span class="tel-val">3000 K</span></div>
+    <div class="tel-item">PRESSURE <span class="tel-val">1.8 MPa</span></div>
+    <div class="tel-item">LOCATION <span class="tel-val">SRIKAKULAM</span></div>
+    <div class="tel-item">TOOLS <span class="tel-val">SU2 · CATIA · HYPERMESH</span></div>
+  </div>
+</div>
+
+<!-- ── LOGIN MODAL ────────────────────────────────────── -->
+<div class="modal-overlay" id="login-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeLogin()">✕</button>
+    <div class="modal-title">Admin Access</div>
+    <div class="modal-sub">// Restricted · Harsha Only</div>
+    <div class="modal-error" id="login-error">⚠ Invalid credentials</div>
+    <div class="form-group" style="margin-bottom:16px">
+      <label class="form-label">Password</label>
+      <input class="form-input" type="password" id="admin-pass" placeholder="••••••••"
+        onkeydown="if(event.key==='Enter') attemptLogin()">
+    </div>
+    <button class="btn-primary" onclick="attemptLogin()" style="width:100%;justify-content:center">↳ Enter Pit Lane</button>
+  </div>
+</div>
+
+<!-- ── ADMIN PANEL ────────────────────────────────────── -->
+<div id="admin-panel">
+  <div class="admin-bar">
+    <div class="admin-title">⬡ ADMIN — <span>Project Manager</span></div>
+    <button class="btn-delete" onclick="closeAdmin()" style="border-color:rgba(240,244,248,0.16);color:rgba(240,244,248,0.5)">✕ EXIT</button>
+  </div>
+  <div class="admin-content">
+    <div class="admin-section-title">↳ Add New Project</div>
+    <div class="admin-form">
+      <div class="form-group"><label class="form-label">Project Title</label><input class="form-input" id="ap-title" placeholder="e.g. CFD Analysis of Wing Profile"></div>
+      <div class="form-group"><label class="form-label">Category</label><select class="select-input" id="ap-cat"><option value="aerospace">Aerospace</option><option value="mechanical">Mechanical</option></select></div>
+      <div class="form-group full-width"><label class="form-label">Description</label><textarea class="form-textarea" id="ap-desc" placeholder="Brief project description..." style="min-height:80px"></textarea></div>
+      <div class="form-group"><label class="form-label">Project Link (optional)</label><input class="form-input" id="ap-link" placeholder="https://..."></div>
+      <div class="form-group"><label class="form-label">Tags (comma-separated)</label><input class="form-input" id="ap-tags" placeholder="ANSYS, CFD, Python"></div>
+      <div class="form-group"><label class="form-label">Icon (emoji)</label><input class="form-input" id="ap-icon" placeholder="🚀" maxlength="4"></div>
+    </div>
+    <button class="btn-primary" onclick="addProject()" style="margin-top:22px">↳ Add to Grid</button>
+    <div class="admin-section-title" style="margin-top:48px">↳ Current Projects</div>
+    <div class="admin-projects-list" id="admin-proj-list"></div>
+  </div>
+</div>
+
+<!-- ════════════ JAVASCRIPT ════════════ -->
+<script>
+/* ── TURBINE CURSOR ─────────────────────────── */
+const turbCur = document.getElementById('turbine-cursor');
+const cRing   = document.getElementById('cursor-ring');
+document.addEventListener('mousemove', e => {
+  turbCur.style.left = e.clientX + 'px';
+  turbCur.style.top  = e.clientY + 'px';
+  cRing.style.left   = e.clientX + 'px';
+  cRing.style.top    = e.clientY + 'px';
+});
+
+/* ── WHEEL SPIN via rAF ──────────────────────── */
+(function() {
+  const wf = document.getElementById('wheel-front');
+  const wr = document.getElementById('wheel-rear');
+  if (!wf || !wr) return;
+  let a = 0;
+  (function tick() {
+    a = (a + 4.5) % 360;
+    wf.style.transform = `rotate(${a}deg)`;
+    wr.style.transform = `rotate(${a}deg)`;
+    requestAnimationFrame(tick);
+  })();
+})();
+
+/* ── MOBILE MENU ─────────────────────────────── */
+function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
+function closeMenu()  { document.getElementById('mobile-menu').classList.remove('open'); }
+
+/* ── SCROLL REVEAL ───────────────────────────── */
+document.querySelectorAll('.reveal').forEach(el => {
+  new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 }).observe(el);
+});
+
+/* ── PROJECTS ────────────────────────────────── */
+const defaultProjects = [
+  { id:'p1', title:'CFD Simulation & Design of a 600 N Rocket Engine Nozzle', category:'aerospace',
+    desc:'Designed a convergent–divergent rocket nozzle from compressible flow equations. CFD in ANSYS Fluent with k–Omega SST at 3000 K / 1.8 MPa; validated choked flow and Mach 2.8 supersonic expansion.',
+    tags:['ANSYS Fluent','CFD','Propulsion','k-Ω SST','Python'], link:'#', icon:'🚀' },
+  { id:'p2', title:'Combined Thermal & Mechanical Loading Analysis of a Bracket', category:'mechanical',
+    desc:'Analysed a bracket under combined thermal and mechanical loads using ANSYS Workbench. Studied temperature distribution, thermal deformation, and von-Mises stress with full contour plots.',
+    tags:['ANSYS Workbench','FEA','Thermal','Structural','von-Mises'], link:'#', icon:'⚙️' }
+];
+
+let customProjects = [];
+try { customProjects = JSON.parse(localStorage.getItem('hv_projects')||'[]'); } catch(e){}
+const allProjects = () => [...defaultProjects, ...customProjects];
+const saveProjects = () => { try { localStorage.setItem('hv_projects',JSON.stringify(customProjects)); } catch(e){} };
+
+function renderCard(p) {
+  const tags = (p.tags||[]).map(t=>`<span class="proj-tag">${t}</span>`).join('');
+  const link = p.link && p.link!=='#'
+    ? `<a href="${p.link}" target="_blank" class="proj-link">↳ View Project →</a>`
+    : `<span class="proj-link" style="opacity:.25">↳ Private / Local</span>`;
+  return `<div class="proj-card">
+    <div class="proj-card-header"><div class="proj-card-title">${p.title}</div><div class="proj-card-icon">${p.icon||'⬡'}</div></div>
+    <div class="proj-card-body"><p class="proj-card-desc">${p.desc}</p></div>
+    <div class="proj-card-tags">${tags}</div>
+    <div class="proj-card-footer">${link}</div>
+  </div>`;
+}
+
+function renderProjects() {
+  const all  = allProjects();
+  const mech = all.filter(p=>p.category==='mechanical');
+  const aero = all.filter(p=>p.category==='aerospace');
+  document.getElementById('proj-grid-all').innerHTML        = all.map(renderCard).join('');
+  document.getElementById('proj-grid-mechanical').innerHTML = mech.length ? mech.map(renderCard).join('') : '<div class="loading-card">NO MECHANICAL PROJECTS YET</div>';
+  document.getElementById('proj-grid-aerospace').innerHTML  = aero.length ? aero.map(renderCard).join('') : '<div class="loading-card">NO AEROSPACE PROJECTS YET</div>';
+}
+renderProjects();
+
+async function fetchGitHub() {
+  try {
+    const repos = await fetch('https://api.github.com/users/harshaverse/repos?sort=updated&per_page=12').then(r=>r.json());
+    const g = document.getElementById('proj-grid-github');
+    if (!Array.isArray(repos)||!repos.length) { g.innerHTML='<div class="loading-card">NO PUBLIC REPOS FOUND</div>'; return; }
+    g.innerHTML = repos.map(r=>`<div class="proj-card">
+      <div class="proj-card-header"><div class="proj-card-title">${r.name}</div><div class="proj-card-icon">⬡</div></div>
+      <div class="proj-card-body"><p class="proj-card-desc">${r.description||'No description provided.'}</p></div>
+      <div class="proj-card-tags">${r.language?`<span class="proj-tag">${r.language}</span>`:''} ${(r.topics||[]).slice(0,3).map(t=>`<span class="proj-tag">${t}</span>`).join('')}</div>
+      <div class="proj-card-footer"><a href="${r.html_url}" target="_blank" class="proj-link">↳ View on GitHub →</a><div class="proj-gh-stats">⭐${r.stargazers_count} 🍴${r.forks_count}</div></div>
+    </div>`).join('');
+  } catch(_) { document.getElementById('proj-grid-github').innerHTML='<div class="loading-card">UNABLE TO FETCH — CHECK CONNECTION</div>'; }
+}
+
+function switchTab(name,btn) {
+  document.querySelectorAll('.proj-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+  if (name==='github') fetchGitHub();
+}
+
+/* ── ADMIN :DONT LAUGH hAAAA PASSWARD IS HERE"fahhhhhhhh"───────────────────────────────────── */
+const ADMIN_PASS = 'Harsha2005';
+function openLogin()  { document.getElementById('login-modal').classList.add('active'); setTimeout(()=>document.getElementById('admin-pass').focus(),100); }
+function closeLogin() { document.getElementById('login-modal').classList.remove('active'); document.getElementById('admin-pass').value=''; document.getElementById('login-error').style.display='none'; }
+function attemptLogin() {
+  if (document.getElementById('admin-pass').value===ADMIN_PASS) { closeLogin(); openAdmin(); }
+  else { document.getElementById('login-error').style.display='block'; document.getElementById('admin-pass').value=''; }
+}
+function openAdmin()  { document.getElementById('admin-panel').classList.add('active'); renderAdminList(); }
+function closeAdmin() { document.getElementById('admin-panel').classList.remove('active'); }
+document.getElementById('login-modal').addEventListener('click',function(e){ if(e.target===this) closeLogin(); });
+
+function addProject() {
+  const title = document.getElementById('ap-title').value.trim();
+  const desc  = document.getElementById('ap-desc').value.trim();
+  if (!title||!desc) { alert('Title and description required!'); return; }
+  customProjects.push({
+    id:'c'+Date.now(),
+    title, category:document.getElementById('ap-cat').value,
+    desc, link:document.getElementById('ap-link').value.trim()||'#',
+    tags:document.getElementById('ap-tags').value.split(',').map(t=>t.trim()).filter(Boolean),
+    icon:document.getElementById('ap-icon').value.trim()||'⬡'
+  });
+  saveProjects(); renderProjects(); renderAdminList();
+  ['ap-title','ap-desc','ap-link','ap-tags','ap-icon'].forEach(id=>document.getElementById(id).value='');
+  alert('✅ Project added!');
+}
+function deleteProject(id) { customProjects=customProjects.filter(p=>p.id!==id); saveProjects(); renderProjects(); renderAdminList(); }
+function renderAdminList() {
+  document.getElementById('admin-proj-list').innerHTML = allProjects().map(p=>`
+    <div class="admin-proj-item">
+      <div><div class="admin-proj-item-title">${p.icon||'⬡'} ${p.title}</div><div class="admin-proj-item-cat">${p.category.toUpperCase()}</div></div>
+      ${defaultProjects.find(d=>d.id===p.id)
+        ? '<span style="font-size:.72rem;color:rgba(240,244,248,0.26);font-family:monospace">DEFAULT</span>'
+        : `<button class="btn-delete" onclick="deleteProject('${p.id}')">✕ Remove</button>`}
+    </div>`).join('');
+}
+
+/* ── CONTACT FORM ────────────────────────────── */
+function handleContactForm(e) { e.preventDefault(); alert('Thanks for reaching out! Harsha will reply soon. 🏎️'); e.target.reset(); }
+</script>
+</body>
+</html>
